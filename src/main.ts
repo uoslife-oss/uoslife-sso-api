@@ -1,5 +1,5 @@
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
-import { NestFactory, Reflector } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import {
   FastifyAdapter,
   NestFastifyApplication,
@@ -7,8 +7,9 @@ import {
 import { SwaggerModule } from '@nestjs/swagger';
 
 import { MainModule } from './main.module';
+import generateSwaggerDocument from './utils/swagger/swagger.generator';
 
-import generateSwaggerDocument from '@infrastructure/swagger/swagger.generator';
+import { CustomExceptionFilter } from '@presentation/filters/exception.filter';
 
 (async () => {
   // Initialize app with root module
@@ -26,6 +27,7 @@ import generateSwaggerDocument from '@infrastructure/swagger/swagger.generator';
   // Apply rules for validation
   app
     .useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
+    .useGlobalFilters(new CustomExceptionFilter(app.get(HttpAdapterHost)))
     .useGlobalPipes(
       new ValidationPipe({
         transform: true,
