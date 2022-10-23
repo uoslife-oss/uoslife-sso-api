@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: uoslife-sso-api-ingress
+  namespace: uoslife-sso
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.allow-http: "false"
+    nginx.org/client-max-body-size: "0"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  rules:
+  - host: sso-api.uoslife.team
+    http:
+      paths:
+        - backend:
+            service:
+              name: uoslife-sso-api
+              port:
+                number: 3000
+          path: /
+          pathType: Prefix
+  tls:
+  - hosts:
+      - sso-api.uoslife.team
+    secretName: sso-api-uoslife-team-tls
