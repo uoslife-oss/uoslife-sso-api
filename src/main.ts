@@ -9,7 +9,7 @@ import { SwaggerModule } from '@nestjs/swagger';
 import { MainModule } from './main.module';
 import generateSwaggerDocument from './utils/swagger/swagger.generator';
 
-import { CustomExceptionFilter } from '@presentation/interceptors/exception.filter';
+import { CustomExceptionFilter } from '@presentation/filters/exception.filter';
 
 (async () => {
   // Initialize app with root module

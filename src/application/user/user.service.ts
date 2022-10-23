@@ -1,4 +1,6 @@
 import {
+  BadRequestException,
+  ConflictException,
   Inject,
   Injectable,
   InternalServerErrorException,
@@ -34,6 +36,17 @@ export class UserService {
   }
 
   async register(data: CreateUserCommand): Promise<User> {
+    await Promise.all([
+      this.isUsernameDuplicated(data.username),
+      this.isEmailDuplicated(data.email),
+      this.isNicknameDuplicated(data.nickname),
+      this.isPhoneNumberDuplicated(data.phoneNumber),
+    ]);
+
+    if (data.email.split('@')[1] !== 'uos.ac.kr') {
+      throw new BadRequestException('NOT_A_UOS_MAIL');
+    }
+
     const user = new User({
       ...data,
       password: await this.hashPassword(data.password),
@@ -46,6 +59,8 @@ export class UserService {
   async updateProfile(userId: string, data: UpdateUserCommand): Promise<User> {
     try {
       const user = await this.userRepository.getUserById(userId);
+
+      await this.isNicknameDuplicated(data.nickname);
 
       const isUpdated = await this.userRepository.updateProfile(
         new User({ ...user, ...data }),
@@ -86,5 +101,37 @@ export class UserService {
     return argon2.verify(hashedPassword, password, {
       secret: Buffer.from(this.configService.get<string>('APP_SECRET', '')),
     });
+  }
+
+  private async isUsernameDuplicated(username: string): Promise<void> {
+    const duplicated = await this.userRepository.checkDuplicated(
+      'username',
+      username,
+    );
+    if (duplicated) throw new ConflictException('USERNAME_IN_USE');
+  }
+
+  private async isEmailDuplicated(email: string): Promise<void> {
+    const duplicated = await this.userRepository.checkDuplicated(
+      'email',
+      email,
+    );
+    if (duplicated) throw new ConflictException('EMAIL_IN_USE');
+  }
+
+  private async isNicknameDuplicated(nickname: string): Promise<void> {
+    const duplicated = await this.userRepository.checkDuplicated(
+      'nickname',
+      nickname,
+    );
+    if (duplicated) throw new ConflictException('NICKNAME_IN_USE');
+  }
+
+  private async isPhoneNumberDuplicated(phoneNumber: string): Promise<void> {
+    const duplicated = await this.userRepository.checkDuplicated(
+      'phoneNumber',
+      phoneNumber,
+    );
+    if (duplicated) throw new ConflictException('PHONE_NUMBER_IN_USE');
   }
 }

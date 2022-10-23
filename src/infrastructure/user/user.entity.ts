@@ -19,7 +19,7 @@ export class UserEntity implements UserProps {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ unique: true })
   username: string;
 
   @Column()

@@ -1,7 +1,7 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { User, UserRepository } from '@domain/user';
+import { UniqueKeys, User, UserRepository } from '@domain/user';
 import { UserEntity } from '@infrastructure/user/user.entity';
 import { UserNotFoundError } from '@infrastructure/user/user.errors';
 
@@ -69,5 +69,15 @@ export class DatabaseUserRepository implements UserRepository {
       .execute();
 
     return affected > 0;
+  }
+
+  async checkDuplicated(key: UniqueKeys, value: string): Promise<boolean> {
+    const count = await this.userRepository
+      .createQueryBuilder('user')
+      .where(`user.${key} = :value`, { value })
+      .andWhere('user.deletedAt IS NULL')
+      .getCount();
+
+    return count > 0;
   }
 }
