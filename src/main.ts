@@ -7,8 +7,7 @@ import {
 import { SwaggerModule } from '@nestjs/swagger';
 
 import { MainModule } from './main.module';
-
-import generateSwaggerDocument from '@infrastructure/swagger/swagger.generator';
+import generateSwaggerDocument from './utils/swagger/swagger.generator';
 
 (async () => {
   // Initialize app with root module

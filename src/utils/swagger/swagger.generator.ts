@@ -2,7 +2,7 @@ import { NestApplication } from '@nestjs/core';
 import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-import { tags } from '@infrastructure/swagger/swagger.tags';
+import { tags } from './swagger.tags';
 
 const document = new DocumentBuilder()
   .setTitle(`시대생 SSO API`)
