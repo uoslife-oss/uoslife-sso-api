@@ -21,38 +21,38 @@ const passwordValidationRule: PasswordValidationRequirement = {
 };
 
 export class UserRegisterRequest implements CreateUserCommand {
-  @ApiProperty()
+  @ApiProperty({ description: '아이디' })
   @IsString()
   @IsNotEmpty()
   username: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: '비밀번호' })
   @IsString()
   @IsNotEmpty()
   @Validate(PasswordValidation, [passwordValidationRule])
   password: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: '이메일' })
   @IsEmail()
   @IsNotEmpty()
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: '이름' })
   @IsString()
   @IsNotEmpty()
   name: string;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ nullable: true, description: '닉네임' })
   @IsString()
   @IsOptional()
   nickname: string | null;
 
-  @ApiProperty()
+  @ApiProperty({ description: '전화번호' })
   @IsString()
   @IsNotEmpty()
   phoneNumber: string;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ nullable: true, description: '프로필 이미지' })
   @IsString()
   @IsOptional()
   profileImage: string | null;

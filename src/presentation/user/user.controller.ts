@@ -8,7 +8,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { UserService } from '@application/user/user.service';
 import { UserProfileUpdateRequest } from '@presentation/user/dtos/user-profile-update.request';
@@ -16,6 +16,7 @@ import { UserProfileResponse } from '@presentation/user/dtos/user-profile.respon
 import { UserRegisterRequest } from '@presentation/user/dtos/user-register.request';
 
 @Controller('users')
+@ApiTags('[사용자] 계정')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

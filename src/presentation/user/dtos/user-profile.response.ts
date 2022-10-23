@@ -3,31 +3,31 @@ import { ApiProperty } from '@nestjs/swagger';
 import { User, UserState, UserType } from '@domain/user';
 
 export class UserProfileResponse {
-  @ApiProperty()
+  @ApiProperty({ description: '사용자 ID' })
   id: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: '이메일' })
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: '아이디' })
   username: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: '이름' })
   name: string;
 
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ nullable: true, description: '닉네임' })
   nickname: string | null;
 
-  @ApiProperty()
+  @ApiProperty({ description: '전화번호' })
   phoneNumber: string;
 
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ nullable: true, description: '프로필 이미지' })
   profileImage: string | null;
 
-  @ApiProperty()
+  @ApiProperty({ description: '사용자 인증 상태' })
   state: UserState;
 
-  @ApiProperty()
+  @ApiProperty({ description: '사용자 구분' })
   type: UserType;
 
   constructor(data: User) {
