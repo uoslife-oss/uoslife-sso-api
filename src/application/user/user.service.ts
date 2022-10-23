@@ -73,13 +73,13 @@ export class UserService {
     }
   }
 
-  private async hashPassword(password: string): Promise<string> {
+  async hashPassword(password: string): Promise<string> {
     return argon2.hash(password, {
       secret: Buffer.from(this.configService.get<string>('APP_SECRET', '')),
     });
   }
 
-  private async verifyPassword(
+  async verifyPassword(
     password: string,
     hashedPassword: string,
   ): Promise<boolean> {
