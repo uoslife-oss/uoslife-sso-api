@@ -40,13 +40,14 @@ export class DatabaseUserRepository implements UserRepository {
     return identifiers[0].id;
   }
 
-  async updateUser(user: User): Promise<boolean> {
-    const { affected } = await this.userRepository
+  async updateProfile(user: User): Promise<boolean> {
+    const userEntityUpdateQueryBuilder = this.userRepository
       .createQueryBuilder('user')
       .update()
-      .where('user.id = :id', { id: user.id })
-      .set(user)
-      .execute();
+      .where('id = :id', { id: user.id })
+      .set(user);
+
+    const { affected } = await userEntityUpdateQueryBuilder.execute();
 
     return affected > 0;
   }
@@ -55,7 +56,7 @@ export class DatabaseUserRepository implements UserRepository {
     const { affected } = await this.userRepository
       .createQueryBuilder('user')
       .softDelete()
-      .where('user.id = :id', { id })
+      .where('id = :id', { id })
       .execute();
 
     return affected > 0;

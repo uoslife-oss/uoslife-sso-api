@@ -2,7 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as argon2 from 'argon2';
 
-import { CreateUserCommand } from '@application/user/user.command';
+import {
+  CreateUserCommand,
+  UpdateUserCommand,
+} from '@application/user/user.command';
 import { User, UserRepository } from '@domain/user';
 
 @Injectable()
@@ -21,6 +24,17 @@ export class UserService {
 
     const id = await this.userRepository.register(user);
     return this.userRepository.getUserById(id);
+  }
+
+  async updateProfile(userId: string, data: UpdateUserCommand): Promise<User> {
+    const user = await this.userRepository.getUserById(userId);
+
+    const isUpdated = await this.userRepository.updateProfile(
+      new User({ ...user, ...data }),
+    );
+
+    if (!isUpdated) return user;
+    return this.userRepository.getUserById(user.id);
   }
 
   private async hashPassword(password: string): Promise<string> {

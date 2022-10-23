@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { User, UserState, UserType } from '@domain/user';
 
-export class UserRegisterResponse {
+export class UserProfileResponse {
   @ApiProperty()
   id: string;
 

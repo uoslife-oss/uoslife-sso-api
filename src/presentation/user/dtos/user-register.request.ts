@@ -51,4 +51,9 @@ export class UserRegisterRequest implements CreateUserCommand {
   @IsString()
   @IsNotEmpty()
   phoneNumber: string;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  profileImage: string | null;
 }
