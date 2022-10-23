@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 
 import { User, UserRepository } from '@domain/user';
 import { UserEntity } from '@infrastructure/user/user.entity';
+import { UserNotFoundError } from '@infrastructure/user/user.errors';
 
 export class DatabaseUserRepository implements UserRepository {
   constructor(
@@ -14,8 +15,11 @@ export class DatabaseUserRepository implements UserRepository {
     const user = await this.userRepository
       .createQueryBuilder('user')
       .where('user.id = :id', { id })
+      .andWhere('user.deletedAt IS NULL')
       .leftJoinAndSelect('user.verifications', 'verifications')
-      .getOneOrFail();
+      .getOne();
+
+    if (!user) throw new UserNotFoundError();
 
     return new User(user);
   }
@@ -24,8 +28,11 @@ export class DatabaseUserRepository implements UserRepository {
     const user = await this.userRepository
       .createQueryBuilder('user')
       .where('user.username = :username', { username })
+      .andWhere('deletedAt IS NULL')
       .leftJoinAndSelect('user.verifications', 'verifications')
-      .getOneOrFail();
+      .getOne();
+
+    if (!user) throw new UserNotFoundError();
 
     return new User(user);
   }
@@ -45,6 +52,7 @@ export class DatabaseUserRepository implements UserRepository {
       .createQueryBuilder('user')
       .update()
       .where('id = :id', { id: user.id })
+      .andWhere('deletedAt IS NULL')
       .set(user);
 
     const { affected } = await userEntityUpdateQueryBuilder.execute();
@@ -57,6 +65,7 @@ export class DatabaseUserRepository implements UserRepository {
       .createQueryBuilder('user')
       .softDelete()
       .where('id = :id', { id })
+      .andWhere('deletedAt IS NULL')
       .execute();
 
     return affected > 0;
