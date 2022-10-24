@@ -7,8 +7,8 @@ import {
   UserRepository,
   UserVerification,
 } from '@domain/user';
-import { UserAcademicRecord } from '@domain/user/user-academic-record';
-import { UserPortalAccount } from '@domain/user/user-portal-account';
+import { UserAcademicRecord } from '@domain/user/models/user-academic-record';
+import { UserPortalAccount } from '@domain/user/models/user-portal-account';
 import { UserAcademicRecordEntity } from '@infrastructure/user/entities/user-academic-record.entity';
 import { UserPortalAccountEntity } from '@infrastructure/user/entities/user-portal-account.entity';
 import { UserVerificationEntity } from '@infrastructure/user/entities/user-verification.entity';

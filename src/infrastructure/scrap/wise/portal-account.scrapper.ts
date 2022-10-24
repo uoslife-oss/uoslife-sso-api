@@ -7,7 +7,7 @@ import { Iconv } from 'iconv';
 import { stringify } from 'query-string';
 import { CookieJar } from 'tough-cookie';
 
-import { UserAcademicRecord } from '@domain/user/user-academic-record';
+import { UserAcademicRecord } from '@domain/user/models/user-academic-record';
 import { BadPortalCredentialsError } from '@infrastructure/scrap/wise/scrap-wise.errors';
 
 export type PortalAccountCredentials = {

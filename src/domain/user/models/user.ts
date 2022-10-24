@@ -1,15 +1,15 @@
 import {
   UserAcademicRecord,
   UserAcademicRecordProps,
-} from '@domain/user/user-academic-record';
+} from '@domain/user/models/user-academic-record';
 import {
   UserPortalAccount,
   UserPortalAccountProps,
-} from '@domain/user/user-portal-account';
+} from '@domain/user/models/user-portal-account';
 import {
   UserVerification,
   UserVerificationProps,
-} from '@domain/user/user-verification';
+} from '@domain/user/models/user-verification';
 
 export enum UserType {
   NORMAL = 'normal',
@@ -69,13 +69,27 @@ export class User implements UserProps {
     this.state = data.state || UserState.UNVERIFIED;
     this.type = data.type || UserType.NORMAL;
 
-    this.verifications = data.verifications.map((x) => new UserVerification(x));
-    this.portalAccounts = data.portalAccounts.map(
-      (x) => new UserPortalAccount(x),
-    );
-    this.academicRecords = data.academicRecords.map(
-      (x) => new UserAcademicRecord(x),
-    );
+    this.verifications = [];
+    this.portalAccounts = [];
+    this.academicRecords = [];
+
+    if (data.verifications && data.verifications.length > 0) {
+      this.verifications = data.verifications.map(
+        (x) => new UserVerification(x),
+      );
+    }
+
+    if (data.portalAccounts && data.portalAccounts.length > 0) {
+      this.portalAccounts = data.portalAccounts.map(
+        (x) => new UserPortalAccount(x),
+      );
+    }
+
+    if (data.academicRecords && data.academicRecords.length > 0) {
+      this.academicRecords = data.academicRecords.map(
+        (x) => new UserAcademicRecord(x),
+      );
+    }
   }
 
   getVerificationById(id: string): UserVerification | undefined {

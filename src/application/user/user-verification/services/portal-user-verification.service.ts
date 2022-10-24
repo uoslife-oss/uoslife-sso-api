@@ -17,7 +17,7 @@ import {
   VerificationState,
   VerificationType,
 } from '@domain/user';
-import { UserPortalAccount } from '@domain/user/user-portal-account';
+import { UserPortalAccount } from '@domain/user/models/user-portal-account';
 import { PortalAccountScrapper } from '@infrastructure/scrap/wise/portal-account.scrapper';
 import { BadPortalCredentialsError } from '@infrastructure/scrap/wise/scrap-wise.errors';
 

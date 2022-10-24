@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { UserAcademicRecordProps } from '@domain/user/user-academic-record';
+import { UserAcademicRecordProps } from '@domain/user/models/user-academic-record';
 import { UserEntity } from '@infrastructure/user/entities/user.entity';
 
 @Entity('user_academic_records')

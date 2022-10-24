@@ -1,7 +1,7 @@
-import { User } from '@domain/user/user';
-import { UserAcademicRecord } from '@domain/user/user-academic-record';
-import { UserPortalAccount } from '@domain/user/user-portal-account';
-import { UserVerification } from '@domain/user/user-verification';
+import { User } from '@domain/user/models/user';
+import { UserAcademicRecord } from '@domain/user/models/user-academic-record';
+import { UserPortalAccount } from '@domain/user/models/user-portal-account';
+import { UserVerification } from '@domain/user/models/user-verification';
 
 export type UniqueKeys = 'username' | 'email' | 'nickname' | 'phoneNumber';
 

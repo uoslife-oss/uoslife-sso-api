@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { EncryptionOptions, EncryptionTransformer } from 'typeorm-encrypted';
 
-import { UserPortalAccountProps } from '@domain/user/user-portal-account';
+import { UserPortalAccountProps } from '@domain/user/models/user-portal-account';
 import { UserEntity } from '@infrastructure/user/entities/user.entity';
 
 const ENCRYPTION_CONFIG: EncryptionOptions = {
