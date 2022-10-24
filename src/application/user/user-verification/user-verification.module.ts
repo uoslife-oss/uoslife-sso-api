@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { DocumentUserVerificationService } from '@application/user/user-verification/document-user-verification.service';
-import { EmailUserVerificationService } from '@application/user/user-verification/email-user-verification.service';
-import { PortalUserVerificationService } from '@application/user/user-verification/portal-user-verification.service';
+import { UserRegisterListener } from '@application/user/user-verification/listeners/user-register.listener';
+import { DocumentUserVerificationService } from '@application/user/user-verification/services/document-user-verification.service';
+import { EmailUserVerificationService } from '@application/user/user-verification/services/email-user-verification.service';
+import { PortalUserVerificationService } from '@application/user/user-verification/services/portal-user-verification.service';
 import { EmailModule } from '@infrastructure/notification/email/email.module';
 import { ScrapWiseModule } from '@infrastructure/scrap/wise/scrap-wise.module';
 import { DatabaseUserModule } from '@infrastructure/user/database-user.module';
@@ -11,6 +12,7 @@ import { DatabaseUserRepository } from '@infrastructure/user/database-user.repos
 @Module({
   imports: [DatabaseUserModule, EmailModule, ScrapWiseModule],
   providers: [
+    UserRegisterListener,
     {
       provide: 'EmailVerificationService',
       useClass: EmailUserVerificationService,

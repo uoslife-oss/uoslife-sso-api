@@ -1,5 +1,5 @@
+import { UserVerificationService } from '@application/user/user-verification/services/user-verification.service';
 import { VerificationRequestCommand } from '@application/user/user-verification/user-verification.command';
-import { UserVerificationService } from '@application/user/user-verification/user-verification.service';
 
 export class DocumentUserVerificationService
   implements UserVerificationService

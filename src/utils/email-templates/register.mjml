@@ -5,8 +5,10 @@
                 <mj-text font-size="20px" color="#2E74FF">시대생 계정 인증</mj-text>
                 <mj-divider border-color="#2E74FF" />
                 <mj-text font-size="14px" color="#000000">이메일 인증을 위해서 아래 링크를 클릭하세요.</mj-text>
+                <mj-text font-size="14px" color="#000000">아래의 인증 링크는 24시간 동안만 유효합니다.</mj-text>
+                <mj-text font-size="14px" color="#000000">만약 본인이 요청한 것이 아니라면 무시해주세요.</mj-text>
                 <mj-text font-size="14px" color="#000000">
-                    <a href="#verificationURL#">#verificationURL#</a>
+                    <a href="$verificationURL">$verificationURL</a>
                 </mj-text>
             </mj-column>
         </mj-section>

@@ -1,21 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 import {
   RequestWithDocumentCommand,
-  RequestWithEmailCommand,
   RequestWithPortalCommand,
 } from '@application/user/user-verification/user-verification.command';
 import { VerificationType } from '@domain/user';
-
-export class EmailUserVerificationRequest implements RequestWithEmailCommand {
-  type: VerificationType.EMAIL;
-
-  @ApiProperty({ description: '이메일' })
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
-}
 
 export class PortalUserVerificationRequest implements RequestWithPortalCommand {
   type: VerificationType.PORTAL;

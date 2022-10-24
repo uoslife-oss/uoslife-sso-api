@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import { UserVerificationService } from '@application/user/user-verification/user-verification.service';
+import { UserVerificationService } from '@application/user/user-verification/services/user-verification.service';
 import { VerificationType } from '@domain/user';
 import { PortalUserVerificationRequest } from '@presentation/user/dtos/user-verification.request';
 

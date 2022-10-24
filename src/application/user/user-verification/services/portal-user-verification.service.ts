@@ -5,11 +5,11 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 
+import { UserVerificationService } from '@application/user/user-verification/services/user-verification.service';
 import {
   RequestWithPortalCommand,
   VerificationRequestCommand,
 } from '@application/user/user-verification/user-verification.command';
-import { UserVerificationService } from '@application/user/user-verification/user-verification.service';
 import {
   UserRepository,
   UserState,
