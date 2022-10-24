@@ -78,7 +78,11 @@ export class User implements UserProps {
     );
   }
 
-  getVerification(id: string): UserVerification | undefined {
+  getVerificationById(id: string): UserVerification | undefined {
     return this.verifications.find((x) => x.id === id);
+  }
+
+  getVerificationByCode(code: string): UserVerification | undefined {
+    return this.verifications.find((x) => x.code === code);
   }
 }

@@ -12,7 +12,8 @@ export interface UserRepository {
   /* Get */
   getUserById(id: string): User | Promise<User>;
   getUserByUsername(username: string): User | Promise<User>;
-  getUserByVerificationId(verificationId: string): User | Promise<User>;
+  getUserByVerificationId(id: string): User | Promise<User>;
+  getUserByVerificationCode(code: string): User | Promise<User>;
 
   updateProfile(user: User): boolean | Promise<boolean>;
   withdraw(id: string): boolean | Promise<boolean>;

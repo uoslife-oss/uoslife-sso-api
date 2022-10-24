@@ -4,7 +4,6 @@ export type VerificationRequestCommand =
   | RequestWithDocumentCommand;
 
 export type VerificationCallback = {
-  id: string;
   code: string;
 };
 

@@ -82,7 +82,11 @@ export class PortalUserVerificationService implements UserVerificationService {
       verificationId,
     );
 
-    const verification = user.getVerification(verificationId);
+    const verification = user.getVerificationById(verificationId);
+
+    if (user.state !== UserState.NEWBIE) {
+      throw new BadRequestException('USER_NOT_A_NEWBIE');
+    }
 
     if (user.academicRecords.length === 0) {
       throw new BadRequestException('ACADEMIC_STATUS_NOT_FOUND');

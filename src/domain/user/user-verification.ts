@@ -15,6 +15,7 @@ export type UserVerificationProps = {
   type: VerificationType;
   state: VerificationState;
   verifiedAt: Date | null;
+  createdAt: Date;
 };
 
 export class UserVerification implements UserVerificationProps {
@@ -23,6 +24,7 @@ export class UserVerification implements UserVerificationProps {
   type: VerificationType;
   state: VerificationState;
   verifiedAt: Date | null;
+  createdAt: Date;
 
   setVerified(verifiedAt = new Date()): void {
     this.verifiedAt = verifiedAt;
@@ -35,5 +37,6 @@ export class UserVerification implements UserVerificationProps {
     this.type = data.type;
     this.state = data.state;
     this.verifiedAt = data.verifiedAt || null;
+    this.createdAt = data.createdAt || null;
   }
 }

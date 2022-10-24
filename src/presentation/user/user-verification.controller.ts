@@ -38,4 +38,17 @@ export class UserVerificationController {
     await this.portalVerificationService.process(verificationId);
     return this.portalVerificationService.finish(verificationId);
   }
+
+  @Post(`${VerificationType.EMAIL}/:code`)
+  @ApiOperation({ summary: '이메일 인증을 완료합니다.' })
+  async callbackEmailVerification(
+    @Param('userId', ParseUUIDPipe) userId: string,
+    @Param('code') code: string,
+  ) {
+    const verificationId = await this.emailVerificationService.callback({
+      code,
+    });
+
+    return this.emailVerificationService.finish(verificationId);
+  }
 }

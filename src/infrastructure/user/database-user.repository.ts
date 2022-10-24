@@ -68,6 +68,16 @@ export class DatabaseUserRepository implements UserRepository {
     return this.getUserById(verification.user.id);
   }
 
+  async getUserByVerificationCode(code: string): Promise<User> {
+    const verification = await this.verificationRepository
+      .createQueryBuilder('verification')
+      .where('verification.code = :code', { code })
+      .leftJoinAndSelect('verification.user', 'user')
+      .getOne();
+
+    return this.getUserById(verification.user.id);
+  }
+
   async register(user: User): Promise<string> {
     const { identifiers } = await this.userRepository
       .createQueryBuilder('user')
