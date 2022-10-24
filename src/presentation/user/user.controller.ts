@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import { UserService } from '@application/user/user.service';
+import { UserCoreService } from '@application/user/user-core/user-core.service';
 import { UserProfileUpdateRequest } from '@presentation/user/dtos/user-profile-update.request';
 import { UserProfileResponse } from '@presentation/user/dtos/user-profile.response';
 import { UserRegisterRequest } from '@presentation/user/dtos/user-register.request';
@@ -18,7 +18,7 @@ import { UserRegisterRequest } from '@presentation/user/dtos/user-register.reque
 @Controller('users')
 @ApiTags('[사용자] 계정')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserCoreService) {}
 
   @Get(':userId')
   @ApiOperation({ summary: '사용자 프로필을 조회합니다.' })

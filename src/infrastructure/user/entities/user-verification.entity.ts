@@ -8,14 +8,14 @@ import {
 } from 'typeorm';
 
 import {
-  UserVerification,
+  UserVerificationProps,
   VerificationState,
   VerificationType,
 } from '@domain/user';
-import { UserEntity } from '@infrastructure/user/user.entity';
+import { UserEntity } from '@infrastructure/user/entities/user.entity';
 
 @Entity('user_verifications')
-export class UserVerificationEntity extends UserVerification {
+export class UserVerificationEntity implements UserVerificationProps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

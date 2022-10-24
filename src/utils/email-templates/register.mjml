@@ -1,0 +1,14 @@
+<mjml>
+    <mj-body>
+        <mj-section>
+            <mj-column>
+                <mj-text font-size="20px" color="#2E74FF">시대생 계정 인증</mj-text>
+                <mj-divider border-color="#2E74FF" />
+                <mj-text font-size="14px" color="#000000">이메일 인증을 위해서 아래 링크를 클릭하세요.</mj-text>
+                <mj-text font-size="14px" color="#000000">
+                    <a href="#verificationURL#">#verificationURL#</a>
+                </mj-text>
+            </mj-column>
+        </mj-section>
+    </mj-body>
+</mjml>

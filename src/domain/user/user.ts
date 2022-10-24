@@ -1,4 +1,15 @@
-import { UserVerification } from '@domain/user/user-verification';
+import {
+  UserAcademicRecord,
+  UserAcademicRecordProps,
+} from '@domain/user/user-academic-record';
+import {
+  UserPortalAccount,
+  UserPortalAccountProps,
+} from '@domain/user/user-portal-account';
+import {
+  UserVerification,
+  UserVerificationProps,
+} from '@domain/user/user-verification';
 
 export enum UserType {
   NORMAL = 'normal',
@@ -24,6 +35,10 @@ export type UserProps = {
   profileImage: string | null;
   state: UserState;
   type: UserType;
+
+  verifications: UserVerificationProps[];
+  portalAccounts: UserPortalAccountProps[];
+  academicRecords: UserAcademicRecordProps[];
 };
 
 export class User implements UserProps {
@@ -39,6 +54,8 @@ export class User implements UserProps {
   type!: UserType;
 
   verifications: UserVerification[];
+  portalAccounts: UserPortalAccount[];
+  academicRecords: UserAcademicRecord[];
 
   constructor(data: Partial<UserProps>) {
     this.id = data.id;
@@ -51,5 +68,17 @@ export class User implements UserProps {
     this.profileImage = data.profileImage || null;
     this.state = data.state || UserState.UNVERIFIED;
     this.type = data.type || UserType.NORMAL;
+
+    this.verifications = data.verifications.map((x) => new UserVerification(x));
+    this.portalAccounts = data.portalAccounts.map(
+      (x) => new UserPortalAccount(x),
+    );
+    this.academicRecords = data.academicRecords.map(
+      (x) => new UserAcademicRecord(x),
+    );
+  }
+
+  getVerification(id: string): UserVerification | undefined {
+    return this.verifications.find((x) => x.id === id);
   }
 }

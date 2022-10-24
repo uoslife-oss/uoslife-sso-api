@@ -12,12 +12,12 @@ import * as argon2 from 'argon2';
 import {
   CreateUserCommand,
   UpdateUserCommand,
-} from '@application/user/user.command';
+} from '@application/user/user-core/user-core.command';
 import { User, UserRepository } from '@domain/user';
 import { UserNotFoundError } from '@infrastructure/user/user.errors';
 
 @Injectable()
-export class UserService {
+export class UserCoreService {
   constructor(
     @Inject('UserRepository')
     private readonly userRepository: UserRepository,
