@@ -25,8 +25,12 @@ spec:
               value: production
             - name: APP_URL
               value: https://sso-api.uoslife.team
+            - name: SERVICE_URL
+              value: https://sso.uoslife.team
+            - name: ADMIN_URL
+              value: https://sso-admin.uoslife.team
             - name: APP_PORT
-              value: 3000
+              value: "3000"
             - name: DB_HOST
               valueFrom:
                 secretKeyRef:
@@ -52,6 +56,26 @@ spec:
                 secretKeyRef:
                   name: uoslife-sso-secret
                   key: DB_PASSWORD
+            - name: APP_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: uoslife-sso-secret
+                  key: APP_ENCRYPTION_KEY
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: uoslife-sso-secret
+                  key: JWT_SECRET_KEY
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: uoslife-sso-secret
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: uoslife-sso-secret
+                  key: AWS_SECRET_ACCESS_KEY
           imagePullPolicy: Always
       imagePullSecrets:
         - name: harbor.uoslife.com
