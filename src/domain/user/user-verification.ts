@@ -37,6 +37,6 @@ export class UserVerification implements UserVerificationProps {
     this.type = data.type;
     this.state = data.state;
     this.verifiedAt = data.verifiedAt || null;
-    this.createdAt = data.createdAt || null;
+    this.createdAt = data.createdAt || new Date();
   }
 }

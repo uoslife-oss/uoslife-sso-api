@@ -67,12 +67,13 @@ export class PortalUserVerificationService implements UserVerificationService {
         username: portalAccount.username,
         password: portalAccount.password,
       });
-      await this.userRepository.createAcademicRecord(user, record);
+      await this.userRepository.upsertAcademicRecord(user, record);
     } catch (error) {
       if (error instanceof BadPortalCredentialsError) {
         await this.userRepository.deletePortalAccount(user, portalAccount);
         throw new BadRequestException('BAD_PORTAL_CREDENTIALS');
       }
+      console.error(error);
       throw new InternalServerErrorException();
     }
   }
@@ -83,10 +84,6 @@ export class PortalUserVerificationService implements UserVerificationService {
     );
 
     const verification = user.getVerificationById(verificationId);
-
-    if (user.state !== UserState.NEWBIE) {
-      throw new BadRequestException('USER_NOT_A_NEWBIE');
-    }
 
     if (user.academicRecords.length === 0) {
       throw new BadRequestException('ACADEMIC_STATUS_NOT_FOUND');

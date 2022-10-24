@@ -183,18 +183,20 @@ export class DatabaseUserRepository implements UserRepository {
     return affected > 0;
   }
 
-  async createAcademicRecord(
+  async upsertAcademicRecord(
     user: User,
     record: UserAcademicRecord,
   ): Promise<string> {
-    const { identifiers } = await this.academicRecordRepository
-      .createQueryBuilder('account')
-      .insert()
-      .values({
+    const { identifiers } = await this.academicRecordRepository.upsert(
+      {
         ...record,
+        updatedAt: new Date(),
         user: { id: user.id },
-      })
-      .execute();
+      },
+      {
+        conflictPaths: ['studentNumber'],
+      },
+    );
 
     return identifiers[0].id;
   }

@@ -40,7 +40,7 @@ export interface UserRepository {
   ): boolean | Promise<boolean>;
 
   /* Academic Record */
-  createAcademicRecord(
+  upsertAcademicRecord(
     user: User,
     record: UserAcademicRecord,
   ): string | Promise<string>;

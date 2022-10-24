@@ -18,7 +18,7 @@ export class UserAcademicRecordEntity implements UserAcademicRecordProps {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   studentNumber: string;
 
   @Column()
