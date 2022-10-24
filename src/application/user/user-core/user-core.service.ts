@@ -7,21 +7,24 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import * as argon2 from 'argon2';
 
+import { UserRegisteredEvent } from '@application/user/user-core/events/user-registered.event';
 import {
   CreateUserCommand,
   UpdateUserCommand,
-} from '@application/user/user.command';
+} from '@application/user/user-core/user-core.command';
 import { User, UserRepository } from '@domain/user';
 import { UserNotFoundError } from '@infrastructure/user/user.errors';
 
 @Injectable()
-export class UserService {
+export class UserCoreService {
   constructor(
     @Inject('UserRepository')
     private readonly userRepository: UserRepository,
     private readonly configService: ConfigService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async getProfile(userId: string): Promise<User> {
@@ -53,6 +56,12 @@ export class UserService {
     });
 
     const id = await this.userRepository.register(user);
+
+    this.eventEmitter.emit(
+      'user.registered',
+      new UserRegisteredEvent({ user }),
+    );
+
     return this.userRepository.getUserById(id);
   }
 
@@ -69,6 +78,9 @@ export class UserService {
 
       return this.userRepository.getUserById(user.id);
     } catch (error) {
+      if (error instanceof ConflictException) {
+        throw error;
+      }
       if (error instanceof UserNotFoundError) {
         throw new NotFoundException('USER_NOT_FOUND');
       }

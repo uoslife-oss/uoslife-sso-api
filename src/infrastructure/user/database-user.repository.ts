@@ -1,14 +1,30 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { UniqueKeys, User, UserRepository } from '@domain/user';
-import { UserEntity } from '@infrastructure/user/user.entity';
+import {
+  UniqueKeys,
+  User,
+  UserRepository,
+  UserVerification,
+} from '@domain/user';
+import { UserAcademicRecord } from '@domain/user/user-academic-record';
+import { UserPortalAccount } from '@domain/user/user-portal-account';
+import { UserAcademicRecordEntity } from '@infrastructure/user/entities/user-academic-record.entity';
+import { UserPortalAccountEntity } from '@infrastructure/user/entities/user-portal-account.entity';
+import { UserVerificationEntity } from '@infrastructure/user/entities/user-verification.entity';
+import { UserEntity } from '@infrastructure/user/entities/user.entity';
 import { UserNotFoundError } from '@infrastructure/user/user.errors';
 
 export class DatabaseUserRepository implements UserRepository {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(UserVerificationEntity)
+    private readonly verificationRepository: Repository<UserVerificationEntity>,
+    @InjectRepository(UserPortalAccountEntity)
+    private readonly portalAccountRepository: Repository<UserPortalAccountEntity>,
+    @InjectRepository(UserAcademicRecordEntity)
+    private readonly academicRecordRepository: Repository<UserAcademicRecordEntity>,
   ) {}
 
   async getUserById(id: string): Promise<User> {
@@ -17,6 +33,9 @@ export class DatabaseUserRepository implements UserRepository {
       .where('user.id = :id', { id })
       .andWhere('user.deletedAt IS NULL')
       .leftJoinAndSelect('user.verifications', 'verifications')
+      .leftJoinAndSelect('user.portalAccounts', 'portalAccounts')
+      .leftJoinAndSelect('user.academicRecords', 'academicRecords')
+      .orderBy('portalAccounts.createdAt', 'DESC')
       .getOne();
 
     if (!user) throw new UserNotFoundError();
@@ -30,11 +49,33 @@ export class DatabaseUserRepository implements UserRepository {
       .where('user.username = :username', { username })
       .andWhere('deletedAt IS NULL')
       .leftJoinAndSelect('user.verifications', 'verifications')
+      .leftJoinAndSelect('user.portalAccounts', 'portalAccounts')
+      .leftJoinAndSelect('user.academicRecords', 'academicRecords')
       .getOne();
 
     if (!user) throw new UserNotFoundError();
 
     return new User(user);
+  }
+
+  async getUserByVerificationId(id: string): Promise<User> {
+    const verification = await this.verificationRepository
+      .createQueryBuilder('verification')
+      .where('verification.id = :id', { id })
+      .leftJoinAndSelect('verification.user', 'user')
+      .getOne();
+
+    return this.getUserById(verification.user.id);
+  }
+
+  async getUserByVerificationCode(code: string): Promise<User> {
+    const verification = await this.verificationRepository
+      .createQueryBuilder('verification')
+      .where('verification.code = :code', { code })
+      .leftJoinAndSelect('verification.user', 'user')
+      .getOne();
+
+    return this.getUserById(verification.user.id);
   }
 
   async register(user: User): Promise<string> {
@@ -48,14 +89,16 @@ export class DatabaseUserRepository implements UserRepository {
   }
 
   async updateProfile(user: User): Promise<boolean> {
-    const userEntityUpdateQueryBuilder = this.userRepository
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { verifications, academicRecords, portalAccounts, ...profile } = user;
+
+    const { affected } = await this.userRepository
       .createQueryBuilder('user')
       .update()
       .where('id = :id', { id: user.id })
       .andWhere('deletedAt IS NULL')
-      .set(user);
-
-    const { affected } = await userEntityUpdateQueryBuilder.execute();
+      .set(profile)
+      .execute();
 
     return affected > 0;
   }
@@ -79,5 +122,82 @@ export class DatabaseUserRepository implements UserRepository {
       .getCount();
 
     return count > 0;
+  }
+
+  async createVerification(
+    user: User,
+    verification: UserVerification,
+  ): Promise<string> {
+    const { identifiers } = await this.verificationRepository
+      .createQueryBuilder('verification')
+      .insert()
+      .values({
+        ...verification,
+        user: { id: user.id },
+      })
+      .execute();
+
+    return identifiers[0].id;
+  }
+
+  async updateVerification(
+    user: User,
+    verification: UserVerification,
+  ): Promise<boolean> {
+    const { affected } = await this.verificationRepository
+      .createQueryBuilder('verification')
+      .update()
+      .where('id = :id', { id: verification.id })
+      .set(verification)
+      .execute();
+
+    return affected > 0;
+  }
+
+  async createPortalAccount(
+    user: User,
+    account: UserPortalAccount,
+  ): Promise<string> {
+    const { identifiers } = await this.portalAccountRepository
+      .createQueryBuilder('account')
+      .insert()
+      .values({
+        ...account,
+        user: { id: user.id },
+      })
+      .execute();
+
+    return identifiers[0].id;
+  }
+
+  async deletePortalAccount(
+    user: User,
+    account: UserPortalAccount,
+  ): Promise<boolean> {
+    const { affected } = await this.portalAccountRepository
+      .createQueryBuilder('account')
+      .delete()
+      .where('id = :id', { id: account.id })
+      .execute();
+
+    return affected > 0;
+  }
+
+  async upsertAcademicRecord(
+    user: User,
+    record: UserAcademicRecord,
+  ): Promise<string> {
+    const { identifiers } = await this.academicRecordRepository.upsert(
+      {
+        ...record,
+        updatedAt: new Date(),
+        user: { id: user.id },
+      },
+      {
+        conflictPaths: ['studentNumber'],
+      },
+    );
+
+    return identifiers[0].id;
   }
 }

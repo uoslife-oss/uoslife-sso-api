@@ -9,7 +9,9 @@ import {
 } from 'typeorm';
 
 import { UserProps, UserState, UserType } from '@domain/user';
-import { UserVerificationEntity } from '@infrastructure/user/user-verification.entity';
+import { UserAcademicRecordEntity } from '@infrastructure/user/entities/user-academic-record.entity';
+import { UserPortalAccountEntity } from '@infrastructure/user/entities/user-portal-account.entity';
+import { UserVerificationEntity } from '@infrastructure/user/entities/user-verification.entity';
 
 @Entity('users')
 export class UserEntity implements UserProps {
@@ -54,4 +56,10 @@ export class UserEntity implements UserProps {
 
   @OneToMany(() => UserVerificationEntity, ({ user }) => user)
   verifications: UserVerificationEntity[];
+
+  @OneToMany(() => UserPortalAccountEntity, ({ user }) => user)
+  portalAccounts: UserPortalAccountEntity[];
+
+  @OneToMany(() => UserAcademicRecordEntity, ({ user }) => user)
+  academicRecords: UserAcademicRecordEntity[];
 }

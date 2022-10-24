@@ -11,7 +11,7 @@ import {
   PasswordValidationRequirement,
 } from 'class-validator-password-check';
 
-import { CreateUserCommand } from '@application/user/user.command';
+import { CreateUserCommand } from '@application/user/user-core/user-core.command';
 
 const passwordValidationRule: PasswordValidationRequirement = {
   mustContainLowerLetter: true,

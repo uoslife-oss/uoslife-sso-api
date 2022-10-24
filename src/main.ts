@@ -27,7 +27,6 @@ import { CustomExceptionFilter } from '@presentation/filters/exception.filter';
   // Apply rules for validation
   app
     .useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
-    .useGlobalFilters(new CustomExceptionFilter(app.get(HttpAdapterHost)))
     .useGlobalPipes(
       new ValidationPipe({
         transform: true,
@@ -35,6 +34,10 @@ import { CustomExceptionFilter } from '@presentation/filters/exception.filter';
         forbidNonWhitelisted: true,
       }),
     );
+
+  if (process.env.NODE_ENV === 'production') {
+    app.useGlobalFilters(new CustomExceptionFilter(app.get(HttpAdapterHost)));
+  }
 
   // Apply CORS
   app.enableCors({ origin: true, credentials: true });

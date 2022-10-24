@@ -1,7 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
 
-import { UpdateUserCommand } from '@application/user/user.command';
+import { UpdateUserCommand } from '@application/user/user-core/user-core.command';
 
 export class UserProfileUpdateRequest implements UpdateUserCommand {
   @ApiPropertyOptional({ description: '닉네임' })
