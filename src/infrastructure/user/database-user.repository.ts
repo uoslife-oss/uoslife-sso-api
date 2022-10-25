@@ -39,6 +39,7 @@ export class DatabaseUserRepository implements UserRepository {
       .leftJoinAndSelect('user.verifications', 'verifications')
       .leftJoinAndSelect('user.portalAccounts', 'portalAccounts')
       .leftJoinAndSelect('user.academicRecords', 'academicRecords')
+      .leftJoinAndSelect('user.devices', 'devices')
       .orderBy('portalAccounts.createdAt', 'DESC')
       .getOne();
 
@@ -51,10 +52,11 @@ export class DatabaseUserRepository implements UserRepository {
     const user = await this.userRepository
       .createQueryBuilder('user')
       .where('user.username = :username', { username })
-      .andWhere('deletedAt IS NULL')
+      .andWhere('user.deletedAt IS NULL')
       .leftJoinAndSelect('user.verifications', 'verifications')
       .leftJoinAndSelect('user.portalAccounts', 'portalAccounts')
       .leftJoinAndSelect('user.academicRecords', 'academicRecords')
+      .leftJoinAndSelect('user.devices', 'devices')
       .getOne();
 
     if (!user) throw new UserNotFoundError();
@@ -80,6 +82,16 @@ export class DatabaseUserRepository implements UserRepository {
       .getOne();
 
     return this.getUserById(verification.user.id);
+  }
+
+  async getUserByDeviceId(deviceId: string): Promise<User> {
+    const device = await this.deviceRepository
+      .createQueryBuilder('device')
+      .where('device.id = :deviceId', { deviceId })
+      .leftJoinAndSelect('device.user', 'user')
+      .getOne();
+
+    return this.getUserById(device.user.id);
   }
 
   async register(user: User): Promise<string> {

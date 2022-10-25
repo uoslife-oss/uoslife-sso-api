@@ -106,4 +106,8 @@ export class User implements UserProps {
   getVerificationByCode(code: string): UserVerification | undefined {
     return this.verifications.find((x) => x.code === code);
   }
+
+  getDeviceById(deviceId: string): UserDevice | undefined {
+    return this.devices.find((x) => x.id === deviceId);
+  }
 }
