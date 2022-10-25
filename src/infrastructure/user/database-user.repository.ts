@@ -39,6 +39,7 @@ export class DatabaseUserRepository implements UserRepository {
       .leftJoinAndSelect('user.verifications', 'verifications')
       .leftJoinAndSelect('user.portalAccounts', 'portalAccounts')
       .leftJoinAndSelect('user.academicRecords', 'academicRecords')
+      .leftJoinAndSelect('user.devices', 'devices')
       .orderBy('portalAccounts.createdAt', 'DESC')
       .getOne();
 
@@ -51,10 +52,11 @@ export class DatabaseUserRepository implements UserRepository {
     const user = await this.userRepository
       .createQueryBuilder('user')
       .where('user.username = :username', { username })
-      .andWhere('deletedAt IS NULL')
+      .andWhere('user.deletedAt IS NULL')
       .leftJoinAndSelect('user.verifications', 'verifications')
       .leftJoinAndSelect('user.portalAccounts', 'portalAccounts')
       .leftJoinAndSelect('user.academicRecords', 'academicRecords')
+      .leftJoinAndSelect('user.devices', 'devices')
       .getOne();
 
     if (!user) throw new UserNotFoundError();
