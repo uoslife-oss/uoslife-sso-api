@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { DatabaseUserRepository } from '@infrastructure/user/database-user.repository';
 import { UserAcademicRecordEntity } from '@infrastructure/user/entities/user-academic-record.entity';
+import { UserDeviceEntity } from '@infrastructure/user/entities/user-device.entity';
 import { UserPortalAccountEntity } from '@infrastructure/user/entities/user-portal-account.entity';
 import { UserVerificationEntity } from '@infrastructure/user/entities/user-verification.entity';
 import { UserEntity } from '@infrastructure/user/entities/user.entity';
@@ -14,6 +15,7 @@ import { UserEntity } from '@infrastructure/user/entities/user.entity';
       UserPortalAccountEntity,
       UserVerificationEntity,
       UserAcademicRecordEntity,
+      UserDeviceEntity,
     ]),
   ],
   providers: [DatabaseUserRepository],

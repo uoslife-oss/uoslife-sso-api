@@ -10,6 +10,7 @@ import {
 
 import { UserProps, UserState, UserType } from '@domain/user';
 import { UserAcademicRecordEntity } from '@infrastructure/user/entities/user-academic-record.entity';
+import { UserDeviceEntity } from '@infrastructure/user/entities/user-device.entity';
 import { UserPortalAccountEntity } from '@infrastructure/user/entities/user-portal-account.entity';
 import { UserVerificationEntity } from '@infrastructure/user/entities/user-verification.entity';
 
@@ -62,4 +63,7 @@ export class UserEntity implements UserProps {
 
   @OneToMany(() => UserAcademicRecordEntity, ({ user }) => user)
   academicRecords: UserAcademicRecordEntity[];
+
+  @OneToMany(() => UserDeviceEntity, ({ user }) => user)
+  devices: UserDeviceEntity[];
 }

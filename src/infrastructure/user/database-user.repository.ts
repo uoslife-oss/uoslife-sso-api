@@ -8,8 +8,10 @@ import {
   UserVerification,
 } from '@domain/user';
 import { UserAcademicRecord } from '@domain/user/models/user-academic-record';
+import { UserDevice } from '@domain/user/models/user-device';
 import { UserPortalAccount } from '@domain/user/models/user-portal-account';
 import { UserAcademicRecordEntity } from '@infrastructure/user/entities/user-academic-record.entity';
+import { UserDeviceEntity } from '@infrastructure/user/entities/user-device.entity';
 import { UserPortalAccountEntity } from '@infrastructure/user/entities/user-portal-account.entity';
 import { UserVerificationEntity } from '@infrastructure/user/entities/user-verification.entity';
 import { UserEntity } from '@infrastructure/user/entities/user.entity';
@@ -25,6 +27,8 @@ export class DatabaseUserRepository implements UserRepository {
     private readonly portalAccountRepository: Repository<UserPortalAccountEntity>,
     @InjectRepository(UserAcademicRecordEntity)
     private readonly academicRecordRepository: Repository<UserAcademicRecordEntity>,
+    @InjectRepository(UserDeviceEntity)
+    private readonly deviceRepository: Repository<UserDeviceEntity>,
   ) {}
 
   async getUserById(id: string): Promise<User> {
@@ -199,5 +203,39 @@ export class DatabaseUserRepository implements UserRepository {
     );
 
     return identifiers[0].id;
+  }
+
+  async createDevice(user: User, device: UserDevice): Promise<string> {
+    const { identifiers } = await this.deviceRepository
+      .createQueryBuilder('device')
+      .insert()
+      .values({
+        ...device,
+        user: { id: user.id },
+      })
+      .execute();
+
+    return identifiers[0].id;
+  }
+
+  async updateDevice(user: User, device: UserDevice): Promise<boolean> {
+    const { affected } = await this.deviceRepository
+      .createQueryBuilder('device')
+      .update()
+      .where('id = :id', { id: device.id })
+      .set(device)
+      .execute();
+
+    return affected > 0;
+  }
+
+  async deleteDevice(user: User, device: UserDevice): Promise<boolean> {
+    const { affected } = await this.deviceRepository
+      .createQueryBuilder('device')
+      .delete()
+      .where('id = :id', { id: device.id })
+      .execute();
+
+    return affected > 0;
   }
 }
