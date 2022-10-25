@@ -1,12 +1,16 @@
 import { Module } from '@nestjs/common';
 
-import { UserCoreModule } from '@application/user/user-core/user-core.module';
-import { UserVerificationModule } from '@application/user/user-verification/user-verification.module';
-import { UserVerificationController } from '@presentation/user/user-verification.controller';
-import { UserController } from '@presentation/user/user.controller';
+import { UserModule } from '@application/user/user.module';
+import { UserDeviceController } from '@presentation/user/controllers/user-device.controller';
+import { UserVerificationController } from '@presentation/user/controllers/user-verification.controller';
+import { UserController } from '@presentation/user/controllers/user.controller';
 
 @Module({
-  imports: [UserCoreModule, UserVerificationModule],
-  controllers: [UserController, UserVerificationController],
+  imports: [UserModule],
+  controllers: [
+    UserController,
+    UserVerificationController,
+    UserDeviceController,
+  ],
 })
 export class PresentationUserModule {}

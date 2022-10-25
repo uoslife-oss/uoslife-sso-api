@@ -1,5 +1,6 @@
 import { User } from '@domain/user/models/user';
 import { UserAcademicRecord } from '@domain/user/models/user-academic-record';
+import { UserDevice } from '@domain/user/models/user-device';
 import { UserPortalAccount } from '@domain/user/models/user-portal-account';
 import { UserVerification } from '@domain/user/models/user-verification';
 
@@ -44,4 +45,9 @@ export interface UserRepository {
     user: User,
     record: UserAcademicRecord,
   ): string | Promise<string>;
+
+  /* Device */
+  createDevice(user: User, device: UserDevice): string | Promise<string>;
+  updateDevice(user: User, device: UserDevice): boolean | Promise<boolean>;
+  deleteDevice(user: User, device: UserDevice): boolean | Promise<boolean>;
 }

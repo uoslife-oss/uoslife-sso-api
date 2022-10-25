@@ -1,3 +1,4 @@
+import { UserDevice, UserDeviceProps } from '@domain/user';
 import {
   UserAcademicRecord,
   UserAcademicRecordProps,
@@ -39,6 +40,7 @@ export type UserProps = {
   verifications: UserVerificationProps[];
   portalAccounts: UserPortalAccountProps[];
   academicRecords: UserAcademicRecordProps[];
+  devices: UserDeviceProps[];
 };
 
 export class User implements UserProps {
@@ -56,6 +58,7 @@ export class User implements UserProps {
   verifications: UserVerification[];
   portalAccounts: UserPortalAccount[];
   academicRecords: UserAcademicRecord[];
+  devices: UserDevice[];
 
   constructor(data: Partial<UserProps>) {
     this.id = data.id;
@@ -89,6 +92,10 @@ export class User implements UserProps {
       this.academicRecords = data.academicRecords.map(
         (x) => new UserAcademicRecord(x),
       );
+    }
+
+    if (data.devices && data.devices.length > 0) {
+      this.devices = data.devices.map((x) => new UserDevice(x));
     }
   }
 

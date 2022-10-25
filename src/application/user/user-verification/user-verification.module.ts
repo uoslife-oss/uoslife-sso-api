@@ -25,10 +25,7 @@ import { DatabaseUserRepository } from '@infrastructure/user/database-user.repos
       provide: 'DocumentVerificationService',
       useClass: DocumentUserVerificationService,
     },
-    {
-      provide: 'UserRepository',
-      useExisting: DatabaseUserRepository,
-    },
+    { provide: 'UserRepository', useExisting: DatabaseUserRepository },
   ],
   exports: [
     'EmailVerificationService',
