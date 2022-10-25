@@ -3,16 +3,20 @@ import {
   Controller,
   Inject,
   Param,
-  ParseUUIDPipe,
   Post,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+import { AuthenticatedRequest } from '../../../utils/types/request.type';
+
+import { JwtAuthGuard } from '@application/auth/authentication/guards/auth.guard';
 import { UserVerificationService } from '@application/user/user-verification/services/user-verification.service';
 import { VerificationType } from '@domain/user';
 import { PortalUserVerificationRequest } from '@presentation/user/dtos/user-verification.request';
 
-@Controller('users/:userId/verifications')
+@Controller('verifications')
 @ApiTags('[사용자] 계정 인증')
 export class UserVerificationController {
   constructor(
@@ -25,13 +29,15 @@ export class UserVerificationController {
   ) {}
 
   @Post(VerificationType.PORTAL)
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: '포털 연동을 요청합니다.' })
+  @ApiBearerAuth()
   async createPortalRequest(
-    @Param('userId', ParseUUIDPipe) userId: string,
+    @Req() { user }: AuthenticatedRequest,
     @Body() data: PortalUserVerificationRequest,
   ) {
     const verificationId = await this.portalVerificationService.request(
-      userId,
+      user.id,
       data,
     );
 
@@ -41,10 +47,7 @@ export class UserVerificationController {
 
   @Post(`${VerificationType.EMAIL}/:code`)
   @ApiOperation({ summary: '이메일 인증을 완료합니다.' })
-  async callbackEmailVerification(
-    @Param('userId', ParseUUIDPipe) userId: string,
-    @Param('code') code: string,
-  ) {
+  async callbackEmailVerification(@Param('code') code: string) {
     const verificationId = await this.emailVerificationService.callback({
       code,
     });
