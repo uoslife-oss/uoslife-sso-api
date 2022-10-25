@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: uoslife-sso-api
-          image: harbor.uoslife.com/uoslife-sso/api:latest
+          image: harbor.uoslife.team/uoslife-sso/api:latest
           ports:
             - containerPort: 3000
           env:
@@ -78,7 +78,7 @@ spec:
                   key: AWS_SECRET_ACCESS_KEY
           imagePullPolicy: Always
       imagePullSecrets:
-        - name: harbor.uoslife.com
+        - name: harbor.uoslife.team
 ---
 apiVersion: v1
 kind: Service
