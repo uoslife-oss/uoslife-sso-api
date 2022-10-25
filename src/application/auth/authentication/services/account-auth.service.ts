@@ -8,7 +8,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 
 import {
-  GenerateTokenCommand,
+  GenerateTokenWithAccountCommand,
   GenerateTokenResult,
   RefreshTokenCommand,
   RefreshTokenResult,
@@ -28,7 +28,7 @@ export class AccountAuthService {
   ) {}
 
   async generateToken(
-    data: GenerateTokenCommand,
+    data: GenerateTokenWithAccountCommand,
   ): Promise<GenerateTokenResult> {
     try {
       const user = await this.userRepository.getUserByUsername(data.username);

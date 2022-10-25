@@ -3,9 +3,14 @@ export enum TokenType {
   REFRESH = 'refresh',
 }
 
-export type GenerateTokenCommand = {
+export type GenerateTokenWithAccountCommand = {
   username: string;
   password: string;
+};
+
+export type GenerateTokenWithDeviceCommand = {
+  deviceId: string;
+  deviceSecret: string;
 };
 
 export type GenerateTokenResult = {

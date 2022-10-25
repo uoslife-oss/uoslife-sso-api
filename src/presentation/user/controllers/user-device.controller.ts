@@ -8,11 +8,18 @@ import {
   Patch,
   Post,
   Req,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { AuthenticatedRequest } from '../../../utils/types/request.type';
 
+import { JwtAuthGuard } from '@application/auth/authentication/guards/auth.guard';
 import { UserDeviceService } from '@application/user/user-device/user-device.service';
 import { DeviceProfileResponse } from '@presentation/user/dtos/device-profile.response';
 import { DeviceRegisterRequest } from '@presentation/user/dtos/device-register.request';
@@ -20,7 +27,9 @@ import { DeviceRegisterResponse } from '@presentation/user/dtos/device-register.
 import { DeviceUpdateRequest } from '@presentation/user/dtos/device-update.request';
 
 @Controller('devices')
+@UseGuards(JwtAuthGuard)
 @ApiTags('[사용자] 기기')
+@ApiBearerAuth()
 export class UserDeviceController {
   constructor(private readonly deviceService: UserDeviceService) {}
 

@@ -84,6 +84,16 @@ export class DatabaseUserRepository implements UserRepository {
     return this.getUserById(verification.user.id);
   }
 
+  async getUserByDeviceId(deviceId: string): Promise<User> {
+    const device = await this.deviceRepository
+      .createQueryBuilder('device')
+      .where('device.id = :deviceId', { deviceId })
+      .leftJoinAndSelect('device.user', 'user')
+      .getOne();
+
+    return this.getUserById(device.user.id);
+  }
+
   async register(user: User): Promise<string> {
     const { identifiers } = await this.userRepository
       .createQueryBuilder('user')

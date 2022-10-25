@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { AuthLoginResponseProps } from '@presentation/auth/dtos/account-login.response';
+import { AuthLoginResponseProps } from '@presentation/auth/dtos/login.response';
 
-export class AccountRefreshResponse {
+export class RefreshResponse {
   @ApiProperty({ description: '인증 토큰' })
   accessToken: string;
 

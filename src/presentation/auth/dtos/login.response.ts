@@ -6,7 +6,7 @@ export type AuthLoginResponseProps = {
   userId: string;
 };
 
-export class AccountLoginResponse {
+export class LoginResponse {
   @ApiProperty({ description: '인증 토큰' })
   accessToken: string;
 

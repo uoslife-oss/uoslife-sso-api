@@ -19,10 +19,10 @@ import { AuthenticatedRequest } from '../../../utils/types/request.type';
 import { JwtAuthGuard } from '@application/auth/authentication/guards/auth.guard';
 import { AccountAuthService } from '@application/auth/authentication/services/account-auth.service';
 import { AccountLoginRequest } from '@presentation/auth/dtos/account-login.request';
-import { AccountLoginResponse } from '@presentation/auth/dtos/account-login.response';
 import { AccountProfileResponse } from '@presentation/auth/dtos/account-profile.response';
-import { AccountRefreshRequest } from '@presentation/auth/dtos/account-refresh.request';
-import { AccountRefreshResponse } from '@presentation/auth/dtos/account-refresh.response';
+import { LoginResponse } from '@presentation/auth/dtos/login.response';
+import { RefreshRequest } from '@presentation/auth/dtos/refresh.request';
+import { RefreshResponse } from '@presentation/auth/dtos/refresh.response';
 
 @Controller('auth')
 @ApiTags('[인증] 계정 인증')
@@ -31,22 +31,18 @@ export class AccountAuthController {
 
   @Post('login')
   @ApiOperation({ summary: '계정으로 로그인합니다.' })
-  @ApiOkResponse({ type: AccountLoginResponse })
-  async getToken(
-    @Body() data: AccountLoginRequest,
-  ): Promise<AccountLoginResponse> {
+  @ApiOkResponse({ type: LoginResponse })
+  async getToken(@Body() data: AccountLoginRequest): Promise<LoginResponse> {
     const result = await this.accountAuthService.generateToken(data);
-    return new AccountLoginResponse(result);
+    return new LoginResponse(result);
   }
 
   @Patch('refresh')
   @ApiOperation({ summary: '인증 토큰을 갱신합니다.' })
-  @ApiOkResponse({ type: AccountRefreshResponse })
-  async refreshToken(
-    @Body() data: AccountRefreshRequest,
-  ): Promise<AccountRefreshResponse> {
+  @ApiOkResponse({ type: RefreshResponse })
+  async refreshToken(@Body() data: RefreshRequest): Promise<RefreshResponse> {
     const result = await this.accountAuthService.refreshToken(data);
-    return new AccountRefreshResponse(result);
+    return new RefreshResponse(result);
   }
 
   @Get('profile')
