@@ -8,8 +8,17 @@ export type GenerateTokenCommand = {
   password: string;
 };
 
-export type GenerateTokenResponse = {
+export type GenerateTokenResult = {
   accessToken: string;
   refreshToken: string;
+  userId: string;
+};
+
+export type RefreshTokenCommand = {
+  refreshToken: string;
+};
+
+export type RefreshTokenResult = {
+  accessToken: string;
   userId: string;
 };

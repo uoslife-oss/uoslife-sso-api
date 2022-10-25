@@ -4,6 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 
 import { AccountAuthService } from '@application/auth/authentication/services/account-auth.service';
 import { DeviceAuthService } from '@application/auth/authentication/services/device-auth.service';
+import { JwtStrategy } from '@application/auth/authentication/strategies/jwt.strategy';
 import { UserModule } from '@application/user/user.module';
 import { DatabaseUserModule } from '@infrastructure/user/database-user.module';
 import { DatabaseUserRepository } from '@infrastructure/user/database-user.repository';
@@ -32,6 +33,7 @@ import { DatabaseUserRepository } from '@infrastructure/user/database-user.repos
   providers: [
     AccountAuthService,
     DeviceAuthService,
+    JwtStrategy,
     {
       provide: 'UserRepository',
       useExisting: DatabaseUserRepository,

@@ -1,6 +1,22 @@
-import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  Patch,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 
+import { AuthenticatedRequest } from '../../../utils/types/request.type';
+
+import { JwtAuthGuard } from '@application/auth/authentication/guards/auth.guard';
 import { AccountAuthService } from '@application/auth/authentication/services/account-auth.service';
 import { AccountLoginRequest } from '@presentation/auth/dtos/account-login.request';
 import { AccountLoginResponse } from '@presentation/auth/dtos/account-login.response';
@@ -26,10 +42,21 @@ export class AccountAuthController {
   @Patch('refresh')
   @ApiOperation({ summary: '인증 토큰을 갱신합니다.' })
   @ApiOkResponse({ type: AccountRefreshResponse })
-  async refreshToken(@Body() data: AccountRefreshRequest) {}
+  async refreshToken(
+    @Body() data: AccountRefreshRequest,
+  ): Promise<AccountRefreshResponse> {
+    const result = await this.accountAuthService.refreshToken(data);
+    return new AccountRefreshResponse(result);
+  }
 
   @Get('profile')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: '로그인된 프로필 정보를 조회합니다.' })
   @ApiOkResponse({ type: AccountProfileResponse })
-  async getProfile() {}
+  @ApiBearerAuth()
+  async getProfile(
+    @Req() { user }: AuthenticatedRequest,
+  ): Promise<AccountProfileResponse> {
+    return new AccountProfileResponse(user);
+  }
 }

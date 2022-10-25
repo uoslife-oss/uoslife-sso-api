@@ -3,12 +3,15 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import {
   GenerateTokenCommand,
-  GenerateTokenResponse,
+  GenerateTokenResult,
+  RefreshTokenCommand,
+  RefreshTokenResult,
   TokenType,
 } from '@application/auth/authentication/authentication.command';
 import { UserCoreService } from '@application/user/user-core/user-core.service';
@@ -26,7 +29,7 @@ export class AccountAuthService {
 
   async generateToken(
     data: GenerateTokenCommand,
-  ): Promise<GenerateTokenResponse> {
+  ): Promise<GenerateTokenResult> {
     try {
       const user = await this.userRepository.getUserByUsername(data.username);
 
@@ -35,9 +38,7 @@ export class AccountAuthService {
         user.password,
       );
 
-      if (!isVerified) {
-        throw new NotFoundException('USER_NOT_FOUND');
-      }
+      if (!isVerified) throw new NotFoundException('USER_NOT_FOUND');
 
       return {
         accessToken: await this.generateAccessToken(user.id),
@@ -50,6 +51,27 @@ export class AccountAuthService {
         error instanceof NotFoundException
       ) {
         throw new NotFoundException('USER_NOT_FOUND');
+      }
+      console.error(error);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async refreshToken(data: RefreshTokenCommand): Promise<RefreshTokenResult> {
+    try {
+      const { aud, sub } = await this.jwtService.verifyAsync(data.refreshToken);
+
+      if (sub !== TokenType.REFRESH) {
+        throw new UnauthorizedException('INVALID_TOKEN');
+      }
+
+      return {
+        accessToken: await this.generateAccessToken(aud),
+        userId: aud,
+      };
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException('INVALID_TOKEN');
       }
       console.error(error);
       throw new InternalServerErrorException();
