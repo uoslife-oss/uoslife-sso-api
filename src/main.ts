@@ -14,7 +14,7 @@ import { CustomExceptionFilter } from '@presentation/filters/exception.filter';
 
   // Create swagger document
   SwaggerModule.setup('docs', app, generateSwaggerDocument(app), {
-    customSiteTitle: '시대생 ID API',
+    customSiteTitle: '시대생 SSO API',
     swaggerOptions: { persistAuthorization: true },
   });
 
