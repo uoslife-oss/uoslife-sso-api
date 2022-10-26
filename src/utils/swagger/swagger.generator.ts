@@ -1,5 +1,5 @@
 import { NestApplication } from '@nestjs/core';
-import { NestFastifyApplication } from '@nestjs/platform-fastify';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { tags } from './swagger.tags';
@@ -16,7 +16,7 @@ const document = new DocumentBuilder()
 tags.forEach((tag) => document.addTag(tag.name, tag.description));
 
 export default function generateSwaggerDocument(
-  app: NestApplication | NestFastifyApplication,
+  app: NestApplication | NestExpressApplication,
 ) {
   return SwaggerModule.createDocument(app, document.build());
 }

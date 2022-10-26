@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 
 import { AccountAuthService } from '@application/auth/authentication/services/account-auth.service';
+import { AdminAuthService } from '@application/auth/authentication/services/admin-auth.service';
 import { DeviceAuthService } from '@application/auth/authentication/services/device-auth.service';
 import { JwtStrategy } from '@application/auth/authentication/strategies/jwt.strategy';
 import { UserModule } from '@application/user/user.module';
@@ -33,12 +34,13 @@ import { DatabaseUserRepository } from '@infrastructure/user/database-user.repos
   providers: [
     AccountAuthService,
     DeviceAuthService,
+    AdminAuthService,
     JwtStrategy,
     {
       provide: 'UserRepository',
       useExisting: DatabaseUserRepository,
     },
   ],
-  exports: [AccountAuthService, DeviceAuthService],
+  exports: [AccountAuthService, DeviceAuthService, AdminAuthService],
 })
 export class AuthenticationModule {}

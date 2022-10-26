@@ -17,6 +17,7 @@ export enum UserType {
   ORG = 'organization',
   COMPANY = 'company',
   UNIV = 'university',
+  ADMIN = 'admin',
 }
 
 export enum UserState {

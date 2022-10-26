@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -15,7 +16,7 @@ import { UserPortalAccountEntity } from '@infrastructure/user/entities/user-port
 import { UserVerificationEntity } from '@infrastructure/user/entities/user-verification.entity';
 
 @Entity('users')
-export class UserEntity implements UserProps {
+export class UserEntity extends BaseEntity implements UserProps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

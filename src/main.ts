@@ -1,9 +1,6 @@
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from '@nestjs/platform-fastify';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule } from '@nestjs/swagger';
 
 import { MainModule } from './main.module';
@@ -13,10 +10,7 @@ import { CustomExceptionFilter } from '@presentation/filters/exception.filter';
 
 (async () => {
   // Initialize app with root module
-  const app = await NestFactory.create<NestFastifyApplication>(
-    MainModule,
-    new FastifyAdapter(),
-  );
+  const app = await NestFactory.create<NestExpressApplication>(MainModule);
 
   // Create swagger document
   SwaggerModule.setup('docs', app, generateSwaggerDocument(app), {

@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -11,7 +12,7 @@ import { DeviceType, UserDeviceProps } from '@domain/user/models/user-device';
 import { UserEntity } from '@infrastructure/user/entities/user.entity';
 
 @Entity('user_devices')
-export class UserDeviceEntity implements UserDeviceProps {
+export class UserDeviceEntity extends BaseEntity implements UserDeviceProps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -38,4 +39,7 @@ export class UserDeviceEntity implements UserDeviceProps {
 
   @ManyToOne(() => UserEntity, ({ devices }) => devices)
   user: UserEntity;
+
+  @Column({ nullable: true })
+  userId: string | null;
 }
