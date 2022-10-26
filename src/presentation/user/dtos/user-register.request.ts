@@ -11,8 +11,6 @@ import {
   PasswordValidationRequirement,
 } from 'class-validator-password-check';
 
-import { CreateUserCommand } from '@application/user/user-core/user-core.command';
-
 const passwordValidationRule: PasswordValidationRequirement = {
   mustContainLowerLetter: true,
   mustContainNumber: true,
@@ -20,7 +18,7 @@ const passwordValidationRule: PasswordValidationRequirement = {
   mustContainUpperLetter: true,
 };
 
-export class UserRegisterRequest implements CreateUserCommand {
+export class UserRegisterRequest {
   @ApiProperty({ description: '아이디' })
   @IsString()
   @IsNotEmpty()

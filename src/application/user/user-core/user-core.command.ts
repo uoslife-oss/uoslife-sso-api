@@ -9,8 +9,15 @@ export type CreateUserCommand = Pick<
   | 'nickname'
   | 'phoneNumber'
   | 'profileImage'
->;
+> &
+  Partial<Pick<User, 'id'>>;
 
 export type UpdateUserCommand = Partial<
   Pick<User, 'nickname' | 'profileImage'>
 >;
+
+export type MigrateUserCommand = {
+  username: string;
+  password: string;
+  email: string;
+};

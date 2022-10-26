@@ -13,9 +13,12 @@ import * as argon2 from 'argon2';
 import { UserRegisteredEvent } from '@application/user/user-core/events/user-registered.event';
 import {
   CreateUserCommand,
+  MigrateUserCommand,
   UpdateUserCommand,
 } from '@application/user/user-core/user-core.command';
 import { User, UserRepository } from '@domain/user';
+import { OldAccountScrapper } from '@infrastructure/scrap/uoslife/old-account.scrapper';
+import { BadUOSLIFECredentialsError } from '@infrastructure/scrap/uoslife/scrap-uoslife.errors';
 import { UserNotFoundError } from '@infrastructure/user/user.errors';
 
 @Injectable()
@@ -23,6 +26,7 @@ export class UserCoreService {
   constructor(
     @Inject('UserRepository')
     private readonly userRepository: UserRepository,
+    private readonly oldAccountScrapper: OldAccountScrapper,
     private readonly configService: ConfigService,
     private readonly eventEmitter: EventEmitter2,
   ) {}
@@ -63,6 +67,24 @@ export class UserCoreService {
     );
 
     return this.userRepository.getUserById(id);
+  }
+
+  async registerWithMigration(data: MigrateUserCommand): Promise<User> {
+    try {
+      const user = await this.oldAccountScrapper.scrap({
+        username: data.username,
+        password: data.password,
+      });
+
+      user.email = data.email;
+      return this.register(user);
+    } catch (error) {
+      if (error instanceof BadUOSLIFECredentialsError) {
+        throw new BadRequestException('BAD_UOSLIFE_CREDENTIALS');
+      }
+      console.error(error);
+      throw new InternalServerErrorException();
+    }
   }
 
   async updateProfile(userId: string, data: UpdateUserCommand): Promise<User> {

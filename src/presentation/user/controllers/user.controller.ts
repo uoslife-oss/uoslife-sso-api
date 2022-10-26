@@ -11,6 +11,7 @@ import {
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { UserCoreService } from '@application/user/user-core/user-core.service';
+import { UserMigrationRequest } from '@presentation/user/dtos/user-migration.request';
 import { UserProfileUpdateRequest } from '@presentation/user/dtos/user-profile-update.request';
 import { UserProfileResponse } from '@presentation/user/dtos/user-profile.response';
 import { UserRegisterRequest } from '@presentation/user/dtos/user-register.request';
@@ -37,6 +38,16 @@ export class UserController {
     @Body() data: UserRegisterRequest,
   ): Promise<UserProfileResponse> {
     const result = await this.userService.register(data);
+    return new UserProfileResponse(result);
+  }
+
+  @Post('migration')
+  @ApiOperation({ summary: '구계정 마이그레이션을 진행합니다.' })
+  @ApiOkResponse({ type: UserProfileResponse })
+  async migration(
+    @Body() data: UserMigrationRequest,
+  ): Promise<UserProfileResponse> {
+    const result = await this.userService.registerWithMigration(data);
     return new UserProfileResponse(result);
   }
 
