@@ -11,6 +11,7 @@ const document = new DocumentBuilder()
   .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
   .addServer(process.env.APP_URL || 'http://localhost:3000')
   .addServer('https://sso-api.uoslife.team/')
+  .setExternalDoc('시대생 SSO Console', '/admin')
   .setVersion('1.0.0');
 
 tags.forEach((tag) => document.addTag(tag.name, tag.description));

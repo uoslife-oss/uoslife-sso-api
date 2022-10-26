@@ -24,7 +24,15 @@ AdminJS.registerAdapter({
         authService: AdminAuthService,
         configService: ConfigService,
       ) => ({
-        adminJsOptions: { rootPath: '/admin', resources },
+        adminJsOptions: {
+          rootPath: '/admin',
+          resources,
+          branding: {
+            companyName: 'UOSLIFE SSO Console',
+            withMadeWithLove: false,
+            logo: false,
+          },
+        },
         auth: {
           authenticate: async (username, password) => {
             try {

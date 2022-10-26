@@ -4,7 +4,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule } from '@nestjs/swagger';
 
 import { MainModule } from './main.module';
-import generateSwaggerDocument from './utils/swagger/swagger.generator';
+import generateSwaggerDocument from './presentation/swagger/swagger.generator';
 
 import { CustomExceptionFilter } from '@presentation/filters/exception.filter';
 
