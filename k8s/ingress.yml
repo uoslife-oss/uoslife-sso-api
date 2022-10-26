@@ -4,6 +4,10 @@ metadata:
   name: uoslife-sso-api-ingress
   namespace: uoslife-sso
   annotations:
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
+    nginx.ingress.kubernetes.io/session-cookie-name: "route"
+    nginx.ingress.kubernetes.io/session-cookie-path: "/admin"
     ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/ingress.class: nginx
     kubernetes.io/ingress.allow-http: "false"

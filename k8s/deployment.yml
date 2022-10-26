@@ -6,7 +6,7 @@ metadata:
   labels:
     app: uoslife-sso-api
 spec:
-  replicas: 3
+  replicas: 5
   selector:
     matchLabels:
       app: uoslife-sso-api
@@ -92,9 +92,9 @@ metadata:
   namespace: uoslife-sso
 spec:
   ports:
-  - port: 3000
-    targetPort: 3000
-    protocol: TCP
-    name: http
+    - port: 3000
+      targetPort: 3000
+      protocol: TCP
+      name: http
   selector:
-      app: uoslife-sso-api
+    app: uoslife-sso-api
