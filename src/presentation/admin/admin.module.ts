@@ -28,7 +28,7 @@ AdminJS.registerAdapter({
           rootPath: '/admin',
           resources,
           branding: {
-            companyName: 'UOSLIFE SSO Console',
+            companyName: '시대생 SSO Console',
             withMadeWithLove: false,
             logo: false,
           },
