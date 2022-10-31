@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: uoslife-sso-api
-  namespace: uoslife-sso
+  name: server-sso
+  namespace: uoslife
   labels:
-    app: uoslife-sso-api
+    app: uoslife-sso
 spec:
   replicas: 5
   selector:
     matchLabels:
-      app: uoslife-sso-api
+      app: server-sso
   template:
     metadata:
       labels:
-        app: uoslife-sso-api
+        app: server-sso
     spec:
       containers:
-        - name: uoslife-sso-api
-          image: harbor.uoslife.team/uoslife-sso/api:latest
+        - name: server-sso
+          image: 747487074043.dkr.ecr.ap-northeast-2.amazonaws.com/uoslife-sso:latest
           ports:
             - containerPort: 3000
           env:
@@ -34,62 +34,60 @@ spec:
             - name: DB_HOST
               valueFrom:
                 secretKeyRef:
-                  name: uoslife-sso-secret
+                  name: sso-secret
                   key: DB_HOST
             - name: DB_PORT
               valueFrom:
                 secretKeyRef:
-                  name: uoslife-sso-secret
+                  name: sso-secret
                   key: DB_PORT
             - name: DB_DATABASE
               valueFrom:
                 secretKeyRef:
-                  name: uoslife-sso-secret
+                  name: sso-secret
                   key: DB_DATABASE
             - name: DB_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: uoslife-sso-secret
+                  name: sso-secret
                   key: DB_USERNAME
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: uoslife-sso-secret
+                  name: sso-secret
                   key: DB_PASSWORD
             - name: APP_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: uoslife-sso-secret
+                  name: sso-secret
                   key: APP_SECRET
             - name: APP_ENCRYPTION_KEY
               valueFrom:
                 secretKeyRef:
-                  name: uoslife-sso-secret
+                  name: sso-secret
                   key: APP_ENCRYPTION_KEY
             - name: JWT_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: uoslife-sso-secret
+                  name: sso-secret
                   key: JWT_SECRET_KEY
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
-                  name: uoslife-sso-secret
+                  name: sso-secret
                   key: AWS_ACCESS_KEY_ID
             - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: uoslife-sso-secret
+                  name: sso-secret
                   key: AWS_SECRET_ACCESS_KEY
           imagePullPolicy: Always
-      imagePullSecrets:
-        - name: harbor.uoslife.team
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: uoslife-sso-api
-  namespace: uoslife-sso
+  name: server-sso
+  namespace: uoslife
 spec:
   ports:
     - port: 3000
@@ -97,4 +95,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: uoslife-sso-api
+    app: server-sso
