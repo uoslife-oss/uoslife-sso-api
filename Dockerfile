@@ -1,7 +1,9 @@
-FROM node:16 as base
+FROM node:16-alpine as base
 
 ARG APP_PORT
 EXPOSE ${APP_PORT}
+
+RUN apk add g++ make py3-pip
 
 WORKDIR /app
 
