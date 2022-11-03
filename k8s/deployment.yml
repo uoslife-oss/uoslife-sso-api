@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: server-sso
-          image: 747487074043.dkr.ecr.ap-northeast-2.amazonaws.com/uoslife-sso:latest
+          image: 755333364809.dkr.ecr.ap-northeast-2.amazonaws.com/uoslife-sso:latest
           ports:
             - containerPort: 3000
           env:

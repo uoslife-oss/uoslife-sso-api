@@ -1,18 +1,13 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: server-sso-ingress
+  name: sso-api.uoslife.team
   namespace: uoslife
   annotations:
-    # Ingress Core Settings
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=3600
-    # SSL Settings
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:747487074043:certificate/9f24e55d-17c8-4cf0-92fe-3af9ce12c9a2
-    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    kubernetes.io/ingress.allow-http: "false"
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.org/client-max-body-size: "0"
 spec:
   rules:
     - host: sso-api.uoslife.team
