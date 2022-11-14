@@ -44,6 +44,16 @@ export class UserDeviceController {
     return new DeviceRegisterResponse(result);
   }
 
+  @Get()
+  @ApiOperation({ summary: '계정에 등록된 기기 목록을 조회합니다.' })
+  @ApiOkResponse({ type: [DeviceProfileResponse] })
+  getDeviceProfiles(
+    @Req() { user }: AuthenticatedRequest,
+  ): DeviceProfileResponse[] {
+    const devices = this.deviceService.getDeviceProfiles(user);
+    return devices.map((device) => new DeviceProfileResponse(device));
+  }
+
   @Get(':deviceId')
   @ApiOperation({ summary: '기기 정보를 조회합니다.' })
   @ApiOkResponse({ type: DeviceProfileResponse })

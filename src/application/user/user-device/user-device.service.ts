@@ -28,6 +28,10 @@ export class UserDeviceService {
     return new UserDevice({ ...device, id, secret: originalSecret });
   }
 
+  getDeviceProfiles(user: User): UserDevice[] {
+    return user.devices;
+  }
+
   getDeviceProfile(user: User, deviceId: string): UserDevice {
     const device = user.devices.find((device) => device.id === deviceId);
     if (!device) throw new NotFoundException('DEVICE_NOT_FOUND');
