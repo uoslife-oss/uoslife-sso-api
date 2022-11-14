@@ -29,7 +29,7 @@ export class UserDeviceService {
   }
 
   getDeviceProfiles(user: User): UserDevice[] {
-    return user.devices;
+    return user.devices || [];
   }
 
   getDeviceProfile(user: User, deviceId: string): UserDevice {
