@@ -6,17 +6,9 @@ import {
   IsString,
   Validate,
 } from 'class-validator';
-import {
-  PasswordValidation,
-  PasswordValidationRequirement,
-} from 'class-validator-password-check';
+import { PasswordValidation } from 'class-validator-password-check';
 
-const passwordValidationRule: PasswordValidationRequirement = {
-  mustContainLowerLetter: true,
-  mustContainNumber: true,
-  mustContainSpecialCharacter: true,
-  mustContainUpperLetter: true,
-};
+import { passwordValidationRule } from '../../../utils/configs/password';
 
 export class UserRegisterRequest {
   @ApiProperty({ description: '아이디' })

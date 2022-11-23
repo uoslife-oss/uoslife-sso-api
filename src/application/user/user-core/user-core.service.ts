@@ -93,9 +93,13 @@ export class UserCoreService {
 
       await this.isNicknameDuplicated(data.nickname);
 
-      const isUpdated = await this.userRepository.updateProfile(
-        new User({ ...user, ...data }),
-      );
+      const updatedUser = new User({ ...user, ...data });
+
+      if (data.newPassword) {
+        updatedUser.password = await this.hashPassword(data.newPassword);
+      }
+
+      const isUpdated = await this.userRepository.updateProfile(updatedUser);
       if (!isUpdated) return user;
 
       return this.userRepository.getUserById(user.id);
@@ -106,6 +110,7 @@ export class UserCoreService {
       if (error instanceof UserNotFoundError) {
         throw new NotFoundException('USER_NOT_FOUND');
       }
+      console.error(error);
       throw new InternalServerErrorException();
     }
   }

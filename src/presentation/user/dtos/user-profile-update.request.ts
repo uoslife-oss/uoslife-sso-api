@@ -1,5 +1,8 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString, Validate } from 'class-validator';
+import { PasswordValidation } from 'class-validator-password-check';
+
+import { passwordValidationRule } from '../../../utils/configs/password';
 
 import { UpdateUserCommand } from '@application/user/user-core/user-core.command';
 
@@ -16,4 +19,12 @@ export class UserProfileUpdateRequest implements UpdateUserCommand {
   @IsString()
   @IsOptional()
   profileImage?: string | null;
+
+  @ApiPropertyOptional({
+    description: '수정할 비밀번호',
+  })
+  @IsString()
+  @IsOptional()
+  @Validate(PasswordValidation, [passwordValidationRule])
+  newPassword?: string;
 }

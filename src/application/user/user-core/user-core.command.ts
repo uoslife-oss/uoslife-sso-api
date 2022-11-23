@@ -13,7 +13,7 @@ export type CreateUserCommand = Pick<
   Partial<Pick<User, 'id'>>;
 
 export type UpdateUserCommand = Partial<
-  Pick<User, 'nickname' | 'profileImage'>
+  Pick<User, 'nickname' | 'profileImage'> & { newPassword?: string }
 >;
 
 export type MigrateUserCommand = {
