@@ -105,8 +105,13 @@ export class DatabaseUserRepository implements UserRepository {
   }
 
   async updateProfile(user: User): Promise<boolean> {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { verifications, academicRecords, portalAccounts, ...profile } = user;
+    const {
+      verifications,
+      academicRecords,
+      portalAccounts,
+      devices,
+      ...profile
+    } = user;
 
     const { affected } = await this.userRepository
       .createQueryBuilder('user')
